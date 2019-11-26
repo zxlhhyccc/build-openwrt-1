@@ -18,7 +18,7 @@ jobs:
       uses: actions/checkout@v1
     - name: Init build dependencies
       run: |
-        docker rmi $(docker images -q)
+        docker rmi `docker images -q`
         sudo rm -rf /usr/share/dotnet /etc/mysql /etc/php
         sudo apt-get remove -y --purge azure-cli ghc zulu* hhvm llvm* firefox google* dotnet* powershell openjdk* mysql* php*
         sudo apt-get update -y
