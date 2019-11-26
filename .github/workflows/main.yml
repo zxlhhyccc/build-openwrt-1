@@ -14,27 +14,13 @@ jobs:
     runs-on: ubuntu-18.04
     
     steps:
-    - uses: actions/checkout@v1
+    - name: Clone Repository
+      uses: actions/checkout@v1
     - name: Init build dependencies
       run: |
         docker rmi $(docker images -q)
-        sudo rm -rf \
-          /usr/share/dotnet \
-          /etc/mysql \
-          /etc/php
-        sudo apt-get remove -y --purge \
-          azure-cli \
-          ghc* \
-          zulu* \
-          hhvm \
-          llvm* \
-          firefox \
-          google* \
-          dotnet* \
-          powershell \
-          openjdk* \
-          mysql* \
-          php*
+        sudo rm -rf /usr/share/dotnet /etc/mysql /etc/php
+        sudo apt-get remove -y --purge azure-cli ghc zulu* hhvm llvm* firefox google* dotnet* powershell openjdk* mysql* php*
         sudo apt-get update -y
         sudo apt-get install -y build-essential asciidoc binutils bzip2 gawk gettext git libncurses5-dev libz-dev patch unzip zlib1g-dev lib32gcc1 libc6-dev-i386 subversion flex uglifyjs git-core gcc-8 gcc++-8 gcc-8-multilib g++-8-multilib p7zip p7zip-full msmtp libssl-dev texinfo libreadline-dev libglib2.0-dev xmlto qemu-utils upx libelf-dev autoconf automake libtool autopoint ccache curl wget vim nano python python3 python-pip python3-pip python-ply python3-ply haveged lrzsz device-tree-compiler
         sudo apt-get autoremove -y --purge
@@ -62,7 +48,8 @@ jobs:
     - name: After Build
       run: |
         /bin/bash /home/runner/openwrt/after_build.sh
-    - uses: actions/upload-artifact@master
+    - name: Upload Artifacts
+      uses: actions/upload-artifact@master
       with:
         name: result
         path: /home/runner/openwrt/bin
